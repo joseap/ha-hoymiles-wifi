@@ -419,8 +419,8 @@
     "meter": {
       "name": "Zähler"
     },
-    "hybrid_inverter": {
-      "name": "Hybrid-Wechselrichter"
+    "inversor_retrofit": {
+      "name": "Inversor_retrofit"
     }
   },
   "services": {

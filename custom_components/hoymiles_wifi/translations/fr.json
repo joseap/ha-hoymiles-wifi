@@ -419,8 +419,8 @@
     "meter": {
       "name": "Compteur"
     },
-    "hybrid_inverter": {
-      "name": "Onduleur hybride"
+    "inversor_retrofit": {
+      "name": "Inversor_retrofit"
     }
   },
   "services": {

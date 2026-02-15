@@ -419,8 +419,8 @@
     "meter": {
       "name": "Meter"
     },
-    "hybrid_inverter": {
-      "name": "Hybrid inverter"
+    "inversor_retrofit": {
+      "name": "Inversor_retrofit"
     }
   },
   "services": {
