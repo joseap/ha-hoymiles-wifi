@@ -81,7 +81,7 @@ class HoymilesEntity(Entity):
                     and self.entity_description.model_name
                 ):
                     device_model = self.entity_description.model_name
-                    device_translation_key = "hybrid_inverter"
+                    device_translation_key = "inversor_retrofit"
                 else:
                     device_model = get_inverter_model_name(
                         self.entity_description.serial_number

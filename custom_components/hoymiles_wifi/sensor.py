@@ -1374,8 +1374,12 @@ def get_sensors_for_hybrid_inverter_description(
                     sensor = class_name(config_entry, updated_description, coordinator)
                     sensors.append(sensor)
             elif "<phase_count>" in description.key:
-                # TODO: Dynamically determine number of phases
-                for phase_index in range(0, 3):
+                model_name = inverter.get("model_name", "").upper()
+                if "LV" in model_name:
+                    phase_range = 1
+                else:
+                    phase_range = 3
+                for phase_index in range(phase_range):
                     new_phase_index_key = new_key.replace(
                         "<phase_count>", str(phase_index)
                     )
