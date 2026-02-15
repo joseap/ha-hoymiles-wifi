@@ -53,17 +53,7 @@ class HoymilesEntity(Entity):
         super().__init__()
         self.entity_description = description
         self._config_entry = config_entry
-        
-        if hasattr(description, "model_name") and description.model_name:
-            object_id_base = "retrofit"
-        elif description.is_dtu_sensor:
-            object_id_base = "dtu"
-        elif "meter" in description.key:
-            object_id_base = "meter"
-        else:
-            object_id_base = "inverter"
-            
-        self._attr_unique_id = f"hoymiles_{config_entry.entry_id}_{object_id_base}_{description.key}"
+        self._attr_unique_id = f"hoymiles_{config_entry.entry_id}_{description.key}"
         
         if hasattr(description, "model_name") and description.model_name:
             sensor_name = description.key.split('.')[-1].replace('_', ' ').title()
@@ -93,7 +83,7 @@ class HoymilesEntity(Entity):
                 device_translation_key = "meter"
             elif hasattr(self.entity_description, "model_name") and self.entity_description.model_name:
                 device_model = self.entity_description.model_name
-                device_translation_key = "retrofit"
+                device_translation_key = "inverter"
             else:
                 device_model = get_inverter_model_name(
                     self.entity_description.serial_number
@@ -101,9 +91,9 @@ class HoymilesEntity(Entity):
                 device_translation_key = "inverter"
 
         if hasattr(self.entity_description, "model_name") and self.entity_description.model_name:
-            object_id_base = "retrofit"
+            pass
         else:
-            object_id_base = "inverter"
+            pass
 
         device_info = DeviceInfo(
             identifiers={(DOMAIN, serial_number)},
