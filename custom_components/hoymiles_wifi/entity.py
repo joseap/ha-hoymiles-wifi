@@ -55,7 +55,7 @@ class HoymilesEntity(Entity):
         self._config_entry = config_entry
         
         if hasattr(description, "model_name") and description.model_name:
-            object_id_base = "inversor_retrofit"
+            object_id_base = "retrofit"
         elif description.is_dtu_sensor:
             object_id_base = "dtu"
         elif "meter" in description.key:
@@ -66,7 +66,8 @@ class HoymilesEntity(Entity):
         self._attr_unique_id = f"hoymiles_{config_entry.entry_id}_{object_id_base}_{description.key}"
         
         if hasattr(description, "model_name") and description.model_name:
-            self._attr_name = f"Inversor_retrofit {description.key.split('.')[-1].replace('_', ' ').title()}"
+            sensor_name = description.key.split('.')[-1].replace('_', ' ').title()
+            self._attr_name = f"Retrofit {sensor_name}"
 
         if description.port_number:
             self._attr_translation_placeholders = {
@@ -92,7 +93,7 @@ class HoymilesEntity(Entity):
                 device_translation_key = "meter"
             elif hasattr(self.entity_description, "model_name") and self.entity_description.model_name:
                 device_model = self.entity_description.model_name
-                device_translation_key = "inversor_retrofit"
+                device_translation_key = "retrofit"
             else:
                 device_model = get_inverter_model_name(
                     self.entity_description.serial_number
@@ -100,7 +101,7 @@ class HoymilesEntity(Entity):
                 device_translation_key = "inverter"
 
         if hasattr(self.entity_description, "model_name") and self.entity_description.model_name:
-            object_id_base = "inversor_retrofit"
+            object_id_base = "retrofit"
         else:
             object_id_base = "inverter"
 

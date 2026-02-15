@@ -419,8 +419,8 @@
     "meter": {
       "name": "Compteur"
     },
-    "inversor_retrofit": {
-      "name": "Inversor_retrofit"
+    "retrofit": {
+      "name": "Retrofit"
     }
   },
   "services": {
