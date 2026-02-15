@@ -54,10 +54,6 @@ class HoymilesEntity(Entity):
         self.entity_description = description
         self._config_entry = config_entry
         self._attr_unique_id = f"hoymiles_{config_entry.entry_id}_{description.key}"
-        
-        if hasattr(description, "model_name") and description.model_name:
-            sensor_name = description.key.split('.')[-1].replace('_', ' ').title()
-            self._attr_name = f"Retrofit {sensor_name}"
 
         if description.port_number:
             self._attr_translation_placeholders = {
