@@ -48,7 +48,7 @@ from .util import async_get_config_entry_data_for_host
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.SENSOR, Platform.NUMBER, Platform.BINARY_SENSOR, Platform.BUTTON]
+PLATFORMS = [Platform.SENSOR, Platform.NUMBER, Platform.BINARY_SENSOR, Platform.BUTTON, Platform.SELECT]
 
 SET_BMS_SCHEMA = vol.Schema(
     {

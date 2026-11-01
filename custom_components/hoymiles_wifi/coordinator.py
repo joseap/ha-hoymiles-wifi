@@ -462,14 +462,38 @@ class HoymilesEnergyStorageUpdateCoordinator(HoymilesLiveDataUpdateCoordinator):
         responses = []
 
         for inverter in self._inverters:
+            inverter_serial = inverter["inverter_serial_number"]
             storage_data = await self._dtu.async_get_energy_storage_data(
                 dtu_serial_number=int(self._dtu_serial_number),
-                inverter_serial_number=inverter["inverter_serial_number"],
+                inverter_serial_number=inverter_serial,
             )
+            
+            # Also fetch the working mode configuration
+            working_mode_data = None
+            try:
+                working_mode_data = await self._dtu.async_get_energy_storage_working_mode(
+                    dtu_serial_number=int(self._dtu_serial_number),
+                    inverter_serial_number=inverter_serial,
+                )
+            except Exception as e:
+                _LOGGER.debug(
+                    "Could not fetch working mode for inverter %s: %s",
+                    inverter_serial,
+                    e,
+                )
+
+            # Combine storage data with working mode
+            if storage_data is not None:
+                # Attach working mode to storage data for easy access
+                if working_mode_data is not None and hasattr(working_mode_data, "emspara"):
+                    storage_data.battery_management.working_mode = working_mode_data.emspara.mode
+                elif hasattr(storage_data, "battery_management"):
+                    storage_data.battery_management.working_mode = None
+            
             if storage_data is None:
                 _LOGGER.debug(
                     "No response from inverter %s; retaining its position with missing data",
-                    inverter["inverter_serial_number"],
+                    inverter_serial,
                 )
             responses.append(storage_data)
 
