@@ -1,0 +1,102 @@
+wifi_battery_self_use:
+  alias: WiFi Battery - Autoconsumo
+  description: Modo autoconsumo (self_use) con reserva SOC
+  icon: mdi:home-lightning-bolt
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: self_use
+      rev_soc: '{{ states(''input_number.wifi_autoconsumo_reserve_soc'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_economic:
+  alias: WiFi Battery - Economic
+  description: Modo economico con horarios y reserva SOC
+  icon: mdi:cash-multiple
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: economic
+      rev_soc: '{{ states(''input_number.wifi_autoconsumo_reserve_soc'') | int }}'
+      time_settings: '{% set cs = states(''input_datetime.wifi_tou_charge_start'')[-8:-3] %}{% set ce = states(''input_datetime.wifi_tou_charge_end'')[-8:-3] %}{% set cp = states(''input_number.wifi_tou_charge_power'') | int %}{% set csoc = states(''input_number.wifi_tou_charge_soc'') | int %}{% set ds = states(''input_datetime.wifi_tou_discharge_start'')[-8:-3] %}{% set de = states(''input_datetime.wifi_tou_discharge_end'')[-8:-3] %}{% set dp = states(''input_number.wifi_tou_discharge_power'') | int %}{% set dsoc = states(''input_number.wifi_tou_discharge_soc'') | int %}01.01-31.12:1,2,3,4,5,6,7={{ cs }}-{{ ce }}-{{ cp }}-{{ csoc }},{{ ds }}-{{ de }}-{{ dp }}-{{ dsoc }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_backup:
+  alias: WiFi Battery - Backup
+  description: Modo backup con reserva SOC
+  icon: mdi:battery-lock
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: backup_power
+      rev_soc: '{{ states(''input_number.wifi_backup_reserve_soc'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_off_grid:
+  alias: WiFi Battery - Off Grid
+  description: Modo off-grid con reserva SOC
+  icon: mdi:battery-off
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: pure_off_grid
+      rev_soc: '{{ states(''input_number.wifi_off_grid_reserve_soc'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_forced_charge:
+  alias: WiFi Battery - Carga Forzada
+  description: Carga forzada con reserva SOC y potencia maxima
+  icon: mdi:battery-plus
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: forced_charging
+      rev_soc: '{{ states(''input_number.wifi_forced_charge_reserve_soc'') | int }}'
+      max_power: '{{ states(''input_number.wifi_forced_charge_max_power'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_forced_discharge:
+  alias: WiFi Battery - Descarga Forzada
+  description: Descarga forzada con SOC minimo y potencia maxima
+  icon: mdi:battery-minus
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: forced_discharge
+      rev_soc: '{{ states(''input_number.wifi_forced_discharge_min_soc'') | int }}'
+      max_power: '{{ states(''input_number.wifi_forced_discharge_max_power'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_peak_shaving:
+  alias: WiFi Battery - Peak Shaving
+  description: Recorte de pico con SOC objetivo y potencia de red
+  icon: mdi:chart-bell-curve-cumulative
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: peak_shaving
+      rev_soc: '{{ states(''input_number.wifi_peak_shaving_reserve_soc'') | int }}'
+      peak_soc: '{{ states(''input_number.wifi_peak_shaving_soc'') | int }}'
+      peak_meter_power: '{{ states(''input_number.wifi_peak_meter_power'') | int }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c
+wifi_battery_tou:
+  alias: WiFi Battery - Time of Use
+  description: Horarios de carga/descarga con 2 periodos
+  icon: mdi:calendar-clock
+  mode: single
+  sequence:
+  - action: hoymiles_wifi.set_bms_mode
+    data:
+      bms_mode: time_of_use
+      rev_soc: '{{ states(''input_number.wifi_tou_reserve_soc'') | int }}'
+      time_periods: '{% set cs = states(''input_datetime.wifi_tou_charge_start'')[-8:-3] %}{% set ce = states(''input_datetime.wifi_tou_charge_end'')[-8:-3] %}{% set cp = states(''input_number.wifi_tou_charge_power'') | int %}{% set csoc = states(''input_number.wifi_tou_charge_soc'') | int %}{% set ds = states(''input_datetime.wifi_tou_discharge_start'')[-8:-3] %}{% set de = states(''input_datetime.wifi_tou_discharge_end'')[-8:-3] %}{% set dp = states(''input_number.wifi_tou_discharge_power'') | int %}{% set dsoc = states(''input_number.wifi_tou_discharge_soc'') | int %}{% set c2s = states(''input_datetime.wifi_tou_charge2_start'')[-8:-3] %}{% set c2e = states(''input_datetime.wifi_tou_charge2_end'')[-8:-3] %}{% set c2p = states(''input_number.wifi_tou_charge2_power'') | int %}{% set c2soc = states(''input_number.wifi_tou_charge2_soc'') | int %}{% set d2s = states(''input_datetime.wifi_tou_discharge2_start'')[-8:-3] %}{% set d2e = states(''input_datetime.wifi_tou_discharge2_end'')[-8:-3] %}{% set d2p = states(''input_number.wifi_tou_discharge2_power'') | int %}{% set d2soc = states(''input_number.wifi_tou_discharge2_soc'') | int %}{{ cs }}-{{ ce }}-{{ cp }}-{{ csoc }}|{{ ds }}-{{ de }}-{{ dp }}-{{ dsoc }}||{{ c2s }}-{{ c2e }}-{{ c2p }}-{{ c2soc }}|{{ d2s }}-{{ d2e }}-{{ d2p }}-{{ d2soc }}'
+    target:
+      device_id: 859a45ed127fb43057f06cf99e065f8c

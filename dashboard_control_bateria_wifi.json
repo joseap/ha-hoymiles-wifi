@@ -1,0 +1,477 @@
+{
+  "title": "Control Batería WiFi",
+  "path": "control-bateria-wifi",
+  "type": "sections",
+  "sections": [
+    {
+      "type": "grid",
+      "max_columns": 4,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Modos principales",
+          "heading_style": "title",
+          "icon": "mdi:battery"
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Carga Forzada",
+              "subtitle": "Modo 5"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_forced_charge_reserve_soc",
+              "name": "Reserva SOC (%)",
+              "icon": "mdi:battery-charging-high",
+              "display_mode": "slider",
+              "min": 10,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_forced_charge_max_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_forced_charge"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Off-Grid",
+              "subtitle": "Modo 4"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_off_grid_reserve_soc",
+              "name": "Reserva SOC (%)",
+              "icon": "mdi:battery-off",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_off_grid"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "max_columns": 1,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Time of Use (TOU)",
+          "heading_style": "title",
+          "icon": "mdi:calendar-clock"
+        },
+        {
+          "type": "custom:mushroom-number-card",
+          "entity": "input_number.wifi_tou_reserve_soc",
+          "name": "Reserva SOC (%)",
+          "icon": "mdi:battery-lock",
+          "display_mode": "slider",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "icon_color": "blue",
+          "buttons": true
+        },
+        {
+          "type": "custom:mushroom-title-card",
+          "title": "Periodo 1 - Carga"
+        },
+        {
+          "type": "grid",
+          "columns": 4,
+          "square": false,
+          "cards": [
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_charge_start",
+              "name": "Inicio",
+              "icon": "mdi:clock-start"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_charge_end",
+              "name": "Fin",
+              "icon": "mdi:clock-end"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_charge_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_charge_soc",
+              "name": "Detener SOC (%)",
+              "icon": "mdi:battery-80"
+            }
+          ]
+        },
+        {
+          "type": "custom:mushroom-title-card",
+          "title": "Periodo 1 - Descarga"
+        },
+        {
+          "type": "grid",
+          "columns": 4,
+          "square": false,
+          "cards": [
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_discharge_start",
+              "name": "Inicio",
+              "icon": "mdi:clock-start"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_discharge_end",
+              "name": "Fin",
+              "icon": "mdi:clock-end"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_discharge_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash-outline"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_discharge_soc",
+              "name": "Detener SOC (%)",
+              "icon": "mdi:battery-30"
+            }
+          ]
+        },
+        {
+          "type": "custom:mushroom-title-card",
+          "title": "Periodo 2 - Carga"
+        },
+        {
+          "type": "grid",
+          "columns": 4,
+          "square": false,
+          "cards": [
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_charge2_start",
+              "name": "Inicio",
+              "icon": "mdi:clock-start"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_charge2_end",
+              "name": "Fin",
+              "icon": "mdi:clock-end"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_charge2_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_charge2_soc",
+              "name": "Detener SOC (%)",
+              "icon": "mdi:battery-80"
+            }
+          ]
+        },
+        {
+          "type": "custom:mushroom-title-card",
+          "title": "Periodo 2 - Descarga"
+        },
+        {
+          "type": "grid",
+          "columns": 4,
+          "square": false,
+          "cards": [
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_discharge2_start",
+              "name": "Inicio",
+              "icon": "mdi:clock-start"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_datetime.wifi_tou_discharge2_end",
+              "name": "Fin",
+              "icon": "mdi:clock-end"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_discharge2_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash-outline"
+            },
+            {
+              "type": "custom:mushroom-entity-card",
+              "entity": "input_number.wifi_tou_discharge2_soc",
+              "name": "Detener SOC (%)",
+              "icon": "mdi:battery-30"
+            }
+          ]
+        },
+        {
+          "type": "custom:mushroom-template-card",
+          "primary": "Aplicar TOU",
+          "icon": "mdi:play",
+          "icon_color": "blue",
+          "tap_action": {
+            "action": "call-service",
+            "service": "script.wifi_battery_tou"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "max_columns": 3,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Modos secundarios",
+          "heading_style": "title",
+          "icon": "mdi:tune"
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Autoconsumo",
+              "subtitle": "Modo 1"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_autoconsumo_reserve_soc",
+              "name": "Reserva SOC (%)",
+              "icon": "mdi:battery-charging-high",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_self_use"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Backup",
+              "subtitle": "Modo 3"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_backup_reserve_soc",
+              "name": "Reserva SOC (%)",
+              "icon": "mdi:battery-lock",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_backup"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Económico",
+              "subtitle": "Modo 2"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_tou_charge_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_economic"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Descarga Forzada",
+              "subtitle": "Modo 6"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_forced_discharge_min_soc",
+              "name": "SOC mínimo (%)",
+              "icon": "mdi:battery-arrow-down",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_forced_discharge_max_power",
+              "name": "Potencia (%)",
+              "icon": "mdi:flash",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_forced_discharge"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "title": "Peak Shaving",
+              "subtitle": "Modo 7"
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_peak_shaving_reserve_soc",
+              "name": "Reserva SOC (%)",
+              "icon": "mdi:battery-charging-high",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_peak_shaving_soc",
+              "name": "Peak SOC (%)",
+              "icon": "mdi:battery-lock",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-number-card",
+              "entity": "input_number.wifi_peak_meter_power",
+              "name": "Potencia red (W)",
+              "icon": "mdi:flash",
+              "display_mode": "slider",
+              "min": 0,
+              "max": 10000,
+              "step": 100,
+              "icon_color": "blue",
+              "buttons": true
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "primary": "Activar",
+              "icon": "mdi:play",
+              "icon_color": "blue",
+              "tap_action": {
+                "action": "call-service",
+                "service": "script.wifi_battery_peak_shaving"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
