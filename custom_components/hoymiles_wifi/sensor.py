@@ -1126,6 +1126,22 @@ HOYMILES_ENERGY_STORAGE_SENSORS = [
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+    HoymilesEnergyStorageSensorEntityDescription(
+        key="[<inverter_count>].battery_management.working_mode",
+        translation_key="battery_working_mode",
+        device_class=SensorDeviceClass.ENUM,
+        options=[
+            "self_use",
+            "economic",
+            "backup_power",
+            "pure_off_grid",
+            "forced_charging",
+            "forced_discharge",
+            "peak_shaving",
+            "time_of_use",
+        ],
+        icon="mdi:battery-charging",
+    ),
 ]
 
 
