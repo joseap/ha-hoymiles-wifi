@@ -1,7 +1,7 @@
 """Support for Hoymiles select entities."""
 
 import dataclasses
-from dataclass import dataclass
+from dataclasses import dataclass
 from enum import Enum
 import logging
 
