@@ -1,0 +1,159 @@
+# Salvaguarda de automatizaciones relacionadas con la programación horaria de
+# modos de batería (inversor Hoymiles HAS-5.0LV-EUG1 "Retrofit").
+# Estado a 2026-11-17: TODAS deshabilitadas (initial_state: false / state off).
+# El mecanismo activo de programación es la integración Scheduler
+# (tarjetas scheduler-card embebidas en la vista control-bateria-wifi,
+#  ver dashboard_control_bateria_wifi.json), no estas automatizaciones.
+#
+# Adicionalmente existen 2 automatizaciones MUERTAS (no se listan aquí porque
+# nunca disparan: referencian entidades schedule.* que no existen):
+#   - automation.tou_activar_por_schedule          (id 1794508411400)
+#   - automation.carga_forzada_activar_por_schedule (id 1794508413672)
+
+# ---------------------------------------------------------------------------
+# LEGACY (mecanismo anterior: time_pattern cada minuto + helpers de horario).
+# Deshabilitadas el 2026-11-17 al migrar a Scheduler. NO borrar sin confirmar.
+# ---------------------------------------------------------------------------
+- id: "1794508506849"
+  alias: TOU - Schedule
+  description: Activa modo TOU cuando es la hora de inicio programada
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time_pattern
+      minutes: 0
+  condition:
+    - condition: template
+      value_template: "{{ states('input_datetime.tou_schedule_inicio')[:5] == now().strftime('%H:%M') }}"
+    - condition: state
+      entity_id: input_boolean.tou_schedule_activo
+      state: "on"
+  action:
+    - action: script.wifi_battery_tou
+      data: {}
+
+- id: "1794508504243"
+  alias: Carga Forzada - Schedule
+  description: Activa Carga Forzada cuando es la hora de inicio programada
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time_pattern
+      minutes: 0
+  condition:
+    - condition: template
+      value_template: "{{ states('input_datetime.carga_forzada_schedule_inicio')[:5] == now().strftime('%H:%M') }}"
+    - condition: state
+      entity_id: input_boolean.carga_forzada_schedule_activo
+      state: "on"
+  action:
+    - action: script.wifi_battery_forced_charge
+      data: {}
+
+# ---------------------------------------------------------------------------
+# PROTOTIPOS descartados de la sesión 2026-11-17 (creados y deshabilitados).
+# Se conservan como referencia; candidatos a borrado si el usuario confirma.
+# ---------------------------------------------------------------------------
+- id: "1794946804992"
+  alias: Batería - Secuencia diaria (prototipo)
+  description: Automatización única multi-trigger (descartada: número fijo de disparos)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "00:30:00"
+      id: carga_forzada
+    - platform: time
+      at: "08:00:00"
+      id: autoconsumo_dia
+    - platform: time
+      at: "13:00:00"
+      id: tou
+    - platform: time
+      at: "18:00:00"
+      id: descarga_forzada
+    - platform: time
+      at: "22:30:00"
+      id: autoconsumo_noche
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: carga_forzada
+          sequence:
+            - action: script.wifi_battery_forced_charge
+        - conditions:
+            - condition: trigger
+              id: autoconsumo_dia
+          sequence:
+            - action: script.wifi_battery_self_use
+        - conditions:
+            - condition: trigger
+              id: tou
+          sequence:
+            - action: script.wifi_battery_tou
+        - conditions:
+            - condition: trigger
+              id: descarga_forzada
+          sequence:
+            - action: script.wifi_battery_forced_discharge
+        - conditions:
+            - condition: trigger
+              id: autoconsumo_noche
+          sequence:
+            - action: script.wifi_battery_self_use
+
+- id: "1794946953281"
+  alias: Secuencia Batería 00:30 Carga forzada
+  description: Schedule independiente de ejemplo (descartado en favor de Scheduler)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "00:30:00"
+  action:
+    - action: script.wifi_battery_forced_charge
+
+- id: "1794946954122"
+  alias: Secuencia Batería 08:00 Autoconsumo
+  description: Schedule independiente de ejemplo (descartado en favor de Scheduler)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "08:00:00"
+  action:
+    - action: script.wifi_battery_self_use
+
+- id: "1794946954912"
+  alias: Secuencia Batería 13:00 TOU
+  description: Schedule independiente de ejemplo (descartado en favor de Scheduler)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "13:00:00"
+  action:
+    - action: script.wifi_battery_tou
+
+- id: "1794946955758"
+  alias: Secuencia Batería 18:00 Descarga forzada
+  description: Schedule independiente de ejemplo (descartado en favor de Scheduler)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "18:00:00"
+  action:
+    - action: script.wifi_battery_forced_discharge
+
+- id: "1794946956623"
+  alias: Secuencia Batería 22:30 Autoconsumo
+  description: Schedule independiente de ejemplo (descartado en favor de Scheduler)
+  mode: single
+  initial_state: false
+  trigger:
+    - platform: time
+      at: "22:30:00"
+  action:
+    - action: script.wifi_battery_self_use
